@@ -8,6 +8,8 @@ public class Game : MonoBehaviour
     public event Action OnStartGameAction;
     public event Action OnStopGameAction;
 
+    [SerializeField] private byte _amountEnemy  = 3;
+
     private List<WeaponMelee> weaponMelees;
     private List<WeaponRange> weaponRanges;
 
@@ -21,9 +23,21 @@ public class Game : MonoBehaviour
         
     }
 
+    public void MinusEnemy()
+    {
+        _amountEnemy--;
+        if (_amountEnemy == 0)
+            Win();
+    }
+
     private void StopGame()
     {
+        OnStopGameAction?.Invoke();
+    }
 
+    public void StartGame()
+    {
+        OnStartGameAction?.Invoke();
     }
 
     public void Lose()

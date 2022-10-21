@@ -4,15 +4,39 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [Header("Parameters")]
+    [SerializeField] private float _animationTime;
+    [SerializeField] private Player.FightingBehaviour fightingBehaviour;
+
+    [Header("Links")]
+    private Player _player;
+
+    [Header("Animators")]
+    [SerializeField] private Animator _anim;
+
+
+    private void Awake()
     {
-        
+        _player = GetComponent<Player>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        _player.OnFightingBehaviourChangedAction += OnFightingBehaviourChanged;
+    }
+
+    private void OnFightingBehaviourChanged(Player.FightingBehaviour fightingBehaviourNew) 
+    {
+        fightingBehaviour = fightingBehaviourNew;
+
+        if (fightingBehaviour == Player.FightingBehaviour.Idle)
+        {
+
+        }
+
+        if (fightingBehaviour == Player.FightingBehaviour.Defend)
+        {
+
+        }
     }
 }
