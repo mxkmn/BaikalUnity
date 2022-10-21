@@ -9,7 +9,8 @@ public class PlayerFighting : MonoBehaviour
     [SerializeField] private float _cooldown;
     [SerializeField] private bool isActivate;
     [SerializeField] Vector3 PosCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
-
+    [SerializeField] private Player.FightingBehaviour fightingBehaviour;
+    
     private float cooldownNow;
 
     [Header("Links")]
@@ -26,6 +27,7 @@ public class PlayerFighting : MonoBehaviour
     {
         _player._game.OnStartGameAction += OnStartGame;
         _player._game.OnStopGameAction += OnStopGame;
+        _player.OnFightingBehaviourChangedAction += OnFightingBehaviourChanged;
     }
 
     private void Update()
@@ -35,10 +37,13 @@ public class PlayerFighting : MonoBehaviour
             if (cooldownNow < _cooldown)
                 cooldownNow += Time.deltaTime;
 
-            if (Input.GetMouseButton(0) && cooldownNow >= _cooldown)
+            if (fightingBehaviour == Player.FightingBehaviour.Idle)
             {
-                Attack();
-                cooldownNow = 0f;
+                if (Input.GetMouseButton(0) && cooldownNow >= _cooldown)
+                {
+                    Attack();
+                    cooldownNow = 0f;
+                }
             }
         }  
     }
@@ -56,6 +61,7 @@ public class PlayerFighting : MonoBehaviour
     private void EnemyDamage(GameObject gameObject )
     {
         //gameObject.GetComponent<>().;
+        _player._game.MinusEnemy();
     }
 
     private void OnStopGame()
@@ -67,4 +73,6 @@ public class PlayerFighting : MonoBehaviour
     {
         isActivate = true;
     }
+
+    private void OnFightingBehaviourChanged(Player.FightingBehaviour fightingBehaviourNew) => fightingBehaviour = fightingBehaviourNew;
 }
