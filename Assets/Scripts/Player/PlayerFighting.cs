@@ -1,19 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerFighting : MonoBehaviour
 {
     [Header("Parameters")]
-    [SerializeField] private float _damage;
     [SerializeField] private float _cooldown;
     [SerializeField] private bool isActivate;
-    [SerializeField] Vector3 PosCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
-    [SerializeField] private Player.FightingBehaviour fightingBehaviour;
     
     private float cooldownNow;
+    private Vector3 PosCenter;
+    private Player.FightingBehaviour fightingBehaviour;
 
     [Header("Links")]
+    [SerializeField] private Animator _animEnergy;
     private Player _player;
     private Camera _cam;
 
@@ -25,8 +24,11 @@ public class PlayerFighting : MonoBehaviour
 
     private void Start()
     {
-        _player._game.OnStartGameAction += OnStartGame;
+        PosCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
+        cooldownNow = _cooldown;
+
         _player._game.OnStopGameAction += OnStopGame;
+        _player._game.OnContinueGameAction += OnContinueGame;
         _player.OnFightingBehaviourChangedAction += OnFightingBehaviourChanged;
     }
 
@@ -42,6 +44,7 @@ public class PlayerFighting : MonoBehaviour
                 if (Input.GetMouseButton(0) && cooldownNow >= _cooldown)
                 {
                     Attack();
+                    _animEnergy.SetTrigger("Shoot");
                     cooldownNow = 0f;
                 }
             }
@@ -50,17 +53,19 @@ public class PlayerFighting : MonoBehaviour
 
     private void Attack()
     {
+        
         Ray ray = _cam.ScreenPointToRay(PosCenter);
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit hit, 50))
         {
-            if (hit.collider.gameObject.layer == 5)
-                EnemyDamage(hit.collider.gameObject);
+            Debug.Log("Ïèó â " + hit.collider.gameObject);
+            if (hit.collider.gameObject.layer == 6)
+                EnemyDamage(hit.collider.gameObject.GetComponent<Enemy>());
         }
     }
 
-    private void EnemyDamage(GameObject gameObject )
+    private void EnemyDamage(Enemy enemy)
     {
-        //gameObject.GetComponent<>().;
+        enemy.Disactivate();
         _player._game.MinusEnemy();
     }
 
@@ -69,7 +74,12 @@ public class PlayerFighting : MonoBehaviour
         isActivate = false;
     }
 
-    private void OnStartGame()
+    public void OnStartGame()
+    {
+        isActivate = true;
+    }
+
+    private void OnContinueGame()
     {
         isActivate = true;
     }

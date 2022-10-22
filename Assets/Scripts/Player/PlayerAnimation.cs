@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
@@ -8,12 +6,11 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField] private float _animationTime;
     [SerializeField] private Player.FightingBehaviour fightingBehaviour;
 
+    [Header("Animators")]
+    [SerializeField] private Animator _animEnergy;
+
     [Header("Links")]
     private Player _player;
-
-    [Header("Animators")]
-    [SerializeField] private Animator _anim;
-
 
     private void Awake()
     {

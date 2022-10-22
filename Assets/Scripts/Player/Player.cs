@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -17,7 +15,6 @@ public class Player : MonoBehaviour
 
     [Header("Links")]
     public PlayerAnimation _playerAnimation;
-    public PlayerMovement _playerMovement;
     public PlayerFighting _playerFighting;
     public Game _game;
 
@@ -30,6 +27,7 @@ public class Player : MonoBehaviour
     {
         _game.OnStartGameAction += OnStartGame;
         _game.OnStopGameAction += OnStopGame;
+        _game.OnContinueGameAction += OnContinueGame;
 
         SetFightingBehaviourDefault();
     }
@@ -53,7 +51,25 @@ public class Player : MonoBehaviour
     public void GetDamage()
     {
         if (fightingBehaviour == FightingBehaviour.Idle)
+        {
+            Audio.instance.Death();
             _game.Lose();
+        }
+    }
+
+    private void OnStopGame()
+    {
+        isActivate = false;
+    }
+
+    private void OnStartGame()
+    {
+        isActivate = true;
+    }
+
+    private void OnContinueGame()
+    {
+        isActivate = true;
     }
 
     private void SetFightingBehaviour(FightingBehaviour fightingBehaviourNew)
@@ -66,13 +82,4 @@ public class Player : MonoBehaviour
     }
 
     private void SetFightingBehaviourDefault() => SetFightingBehaviour(FightingBehaviour.Idle);
-
-    private void OnStopGame()
-    {
-        isActivate = false;
-    }
-    private void OnStartGame()
-    {
-        isActivate = true;
-    }
 }
