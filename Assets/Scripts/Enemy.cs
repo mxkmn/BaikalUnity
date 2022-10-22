@@ -1,18 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private bool isActivate;
+
+    private void Update()
     {
-        
+        if (isActivate)
+        {
+
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Activate()
     {
-        
+        isActivate = true;
+    }
+
+    public void Disactivate()
+    {
+        isActivate = false;
+        gameObject.SetActive(false);
     }
 }
