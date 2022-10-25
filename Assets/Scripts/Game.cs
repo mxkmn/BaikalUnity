@@ -11,32 +11,41 @@ public class Game : MonoBehaviour
     public event Action<bool> OnEndGameAction;
 
     [Header("Settings")]
-    [SerializeField] private byte _amountEnemy  = 3;
     [SerializeField, Range(1, 20)] private int _delayBeforeAttack  = 3;
     [SerializeField, Range(1, 20)] private int _delayDream  = 1;
     [SerializeField] private UIGame _UIGame;
     [SerializeField] private Player _player;
+    private byte _amountEnemy;
     private Text _scoreNow; 
     private Animator _fight; 
 
     [Header("Enemy")]
-    [SerializeField] public Enemy[] _enemy;
+    public GameObject _enemies;
 
+    [Header("Guns")]
+    [SerializeField] private MeshRenderer _sword;
+    [SerializeField] private MeshRenderer _defend;
+
+    private Enemy[] _enemy;
+    private MeshRenderer[] _enemyMR;
     private bool isPlay;
     private CameraController _camera;
-    public float _timeScore = 0f;
 
+    [HideInInspector] public float _timeScore = 0f;
 
     private void Awake()
     {
         _camera = Camera.main.GetComponent<CameraController>();
         _scoreNow = _UIGame.scoreNow;
         _fight = _UIGame.fight.GetComponent<Animator>();
+        _enemy = _enemies.GetComponentsInChildren<Enemy>();
+        _enemyMR = _enemies.GetComponentsInChildren<MeshRenderer>();
     }
 
     private void Start()
     {
         Cursor.visible = false;
+        _amountEnemy = (byte)_enemy.Length;
         Story();
     }
 
@@ -46,6 +55,11 @@ public class Game : MonoBehaviour
         {
             _timeScore += Time.deltaTime;
             _scoreNow.text = "<color=#E03434>Time</color>: " + MathF.Round(_timeScore, 2) + " s";
+
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                _UIGame.StopGame();
+            }
         }
     }
 
@@ -119,8 +133,10 @@ public class Game : MonoBehaviour
 
     private void ShowEnemy()
     {
-        foreach (Enemy enemy in _enemy)
-            enemy.gameObject.SetActive(true);
+        _sword.enabled = true;
+        _defend.enabled = true;
+        foreach (MeshRenderer enemyMR in _enemyMR)
+            enemyMR.enabled = true;
     }
 
     private void ActivateEnemy()

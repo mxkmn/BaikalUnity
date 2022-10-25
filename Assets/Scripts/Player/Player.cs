@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public PlayerAnimation _playerAnimation;
     public PlayerFighting _playerFighting;
     public Game _game;
+    private bool isLose;
 
     private void Awake()
     {
@@ -45,6 +46,8 @@ public class Player : MonoBehaviour
             {
                 SetFightingBehaviour(FightingBehaviour.Idle);
             }
+
+            
         }
     }
 
@@ -52,8 +55,12 @@ public class Player : MonoBehaviour
     {
         if (fightingBehaviour == FightingBehaviour.Idle)
         {
-            Audio.instance.Death();
-            _game.Lose();
+            if (!isLose)
+            {
+                Audio.instance.Death();
+                _game.Lose();
+                isLose = true;
+            }
         }
     }
 
