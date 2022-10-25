@@ -57,7 +57,7 @@ public class PlayerFighting : MonoBehaviour
     {
         
         Ray ray = _cam.ScreenPointToRay(PosCenter);
-        if (Physics.Raycast(ray, out RaycastHit hit, 50))
+        if (Physics.Raycast(ray, out RaycastHit hit, 5))
         {
             if (hit.collider.gameObject.layer == 6)
                 EnemyDamage(hit.collider.gameObject.GetComponent<Enemy>());

@@ -27,7 +27,7 @@ public class Game : MonoBehaviour
     [SerializeField] private MeshRenderer _defend;
 
     private Enemy[] _enemy;
-    private MeshRenderer[] _enemyMR;
+    private SkinnedMeshRenderer[] _enemyMR;
     private bool isPlay;
     private CameraController _camera;
 
@@ -39,7 +39,7 @@ public class Game : MonoBehaviour
         _scoreNow = _UIGame.scoreNow;
         _fight = _UIGame.fight.GetComponent<Animator>();
         _enemy = _enemies.GetComponentsInChildren<Enemy>();
-        _enemyMR = _enemies.GetComponentsInChildren<MeshRenderer>();
+        _enemyMR = _enemies.GetComponentsInChildren<SkinnedMeshRenderer>();
     }
 
     private void Start()
@@ -135,7 +135,7 @@ public class Game : MonoBehaviour
     {
         _sword.enabled = true;
         _defend.enabled = true;
-        foreach (MeshRenderer enemyMR in _enemyMR)
+        foreach (SkinnedMeshRenderer enemyMR in _enemyMR)
             enemyMR.enabled = true;
     }
 
