@@ -9,6 +9,7 @@ public class UIMenu : MonoBehaviour
 
     [Header("Button")]
     [SerializeField] private Button _playBtn;
+    [SerializeField] private GameObject _noneTouchPanel;
     [SerializeField] private Text _bestTime;
 
     private bool isLoading, isWaitTouch;
@@ -18,7 +19,6 @@ public class UIMenu : MonoBehaviour
     {
         InitMenu();
 
-        isWaitTouch = true;
         Audio.instance.RunMusicMenu();
     }
 
@@ -42,10 +42,15 @@ public class UIMenu : MonoBehaviour
         }
     }
 
+    public void TurnTouch()
+    {
+        isWaitTouch = true;
+    }
+
     private void InitMenu()
     {
         Fader.instance.GetComponent<Canvas>().worldCamera = Camera.main;
-        Fader.instance.GetComponent<Canvas>().planeDistance = 1;
+        Fader.instance.GetComponent<Canvas>().planeDistance = 0.5f;
 
         if (!PlayerPrefs.HasKey("TheBestTime"))
             PlayerPrefs.SetFloat("TheBestTime", 0f);
@@ -79,6 +84,7 @@ public class UIMenu : MonoBehaviour
         while (isWaitFading)
             yield return null;
 
+        
         isLoading = false;
     }
 }

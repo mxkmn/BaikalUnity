@@ -1,8 +1,9 @@
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 
 public class PlayerFighting : MonoBehaviour
 {
+    public event Action OnHitSwordAction;
     [Header("Parameters")]
     [SerializeField] private float _cooldown;
     [SerializeField] private bool isActivate;
@@ -44,6 +45,7 @@ public class PlayerFighting : MonoBehaviour
                 if (Input.GetMouseButton(0) && cooldownNow >= _cooldown)
                 {
                     Attack();
+                    OnHitSwordAction?.Invoke();
                     _animEnergy.SetTrigger("Shoot");
                     cooldownNow = 0f;
                 }
@@ -55,9 +57,8 @@ public class PlayerFighting : MonoBehaviour
     {
         
         Ray ray = _cam.ScreenPointToRay(PosCenter);
-        if (Physics.Raycast(ray, out RaycastHit hit, 50))
+        if (Physics.Raycast(ray, out RaycastHit hit, 5))
         {
-            Debug.Log("Ïèó â " + hit.collider.gameObject);
             if (hit.collider.gameObject.layer == 6)
                 EnemyDamage(hit.collider.gameObject.GetComponent<Enemy>());
         }
