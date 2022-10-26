@@ -63,6 +63,8 @@ public class Fader : MonoBehaviour
         isFading = false;
         if (GameObject.FindObjectOfType<Game>() != null)
             GameObject.FindObjectOfType<Game>().StartGame();
+        else if (GameObject.FindObjectOfType<UIMenu>() != null)
+            GameObject.FindObjectOfType<UIMenu>().TurnTouch();
     }
 }
 

@@ -49,7 +49,7 @@ public class UIGame : MonoBehaviour
         _continueBtn.onClick.RemoveListener(ContinueGame);
     }
 
-    async private void StopGame()
+    async public void StopGame()
     {
         if (isWaitTouch)
         {
@@ -113,7 +113,7 @@ public class UIGame : MonoBehaviour
     private void InitGame()
     {
         Fader.instance.GetComponent<Canvas>().worldCamera = Camera.main;
-        Fader.instance.GetComponent<Canvas>().planeDistance = 1;
+        Fader.instance.GetComponent<Canvas>().planeDistance = 0.5f;
     }
 
     private IEnumerator LoadSceneRoutine(int scene)
